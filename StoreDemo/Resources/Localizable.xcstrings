@@ -1,0 +1,391 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "Alert.Cancel" : {
+      "comment" : "Cancel",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cancel"
+          }
+        }
+      }
+    },
+    "Alert.Error" : {
+      "comment" : "Error",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Error"
+          }
+        }
+      }
+    },
+    "Alert.Ok" : {
+      "comment" : "Ok",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ok"
+          }
+        }
+      }
+    },
+    "Error.CloudKit.NoAccount" : {
+      "comment" : "Make sure iCloud is authorised to save your game data",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Make sure iCloud is authorised to save your game data"
+          }
+        }
+      }
+    },
+    "Error.CloudKit.NotAvailable" : {
+      "comment" : "iCloud synchronization is not available. Check settings or your internet connection to save your game data",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "iCloud synchronization is not available. Check settings or your internet connection to save your game data"
+          }
+        }
+      }
+    },
+    "Error.NoInternet" : {
+      "comment" : "The Internet connection appears to be offline",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The Internet connection appears to be offline"
+          }
+        }
+      }
+    },
+    "Error.Store.ProductsLoading" : {
+      "comment" : "Products loading error",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Products loading error"
+          }
+        }
+      }
+    },
+    "Error.Store.Purchase" : {
+      "comment" : "Failed to buy. Try again later",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Failed to buy. Try again later"
+          }
+        }
+      }
+    },
+    "Error.Store.Restore" : {
+      "comment" : "Failed to restore purchases. Try again later",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Failed to restore purchases. Try again later"
+          }
+        }
+      }
+    },
+    "Premium.Action" : {
+      "comment" : "Join Premium",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Join Premium"
+          }
+        }
+      }
+    },
+    "Reward.Coins.Info" : {
+      "comment" : "Get reward",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Get reward"
+          }
+        }
+      }
+    },
+    "Reward.Daily.Available.PushNotification.Message" : {
+      "comment" : "Your daily reward is available now. Come to collect",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your daily reward is available now. Come to collect"
+          }
+        }
+      }
+    },
+    "Reward.Daily.Available.PushNotification.Title" : {
+      "comment" : "Hoora",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hoora"
+          }
+        }
+      }
+    },
+    "Reward.Daily.Info" : {
+      "comment" : "Select daily reward",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Select daily reward"
+          }
+        }
+      }
+    },
+    "Settings" : {
+      "comment" : "Settings",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Settings"
+          }
+        }
+      }
+    },
+    "Settings.UI" : {
+      "comment" : "UI",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "UI"
+          }
+        }
+      }
+    },
+    "Settings.UI.Background.Color" : {
+      "comment" : "Background color",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Background color"
+          }
+        }
+      }
+    },
+    "Settings.UI.Color.Reset" : {
+      "comment" : "Reset",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reset"
+          }
+        }
+      }
+    },
+    "Store.Coins.Description" : {
+      "comment" : "Select coins pack",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Select coins pack"
+          }
+        }
+      }
+    },
+    "Store.Coins.Title" : {
+      "comment" : "Add coins",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add coins"
+          }
+        }
+      }
+    },
+    "Store.Premium.Description" : {
+      "comment" : "Get all features",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Get all features"
+          }
+        }
+      }
+    },
+    "Store.Premium.Feature.ColorStyles" : {
+      "comment" : "Color styles",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Color styles"
+          }
+        }
+      }
+    },
+    "Store.Premium.Feature.GamesHistory" : {
+      "comment" : "Games history",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Games history"
+          }
+        }
+      }
+    },
+    "Store.Premium.Feature.NoAds" : {
+      "comment" : "No ads",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No ads"
+          }
+        }
+      }
+    },
+    "Store.Premium.Feature.OnlineGame" : {
+      "comment" : "Online game",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Online game"
+          }
+        }
+      }
+    },
+    "Store.Premium.Feature.UnlimitedGames" : {
+      "comment" : "Unlimited games",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unlimited games"
+          }
+        }
+      }
+    },
+    "Store.Premium.Subscription.ActiveFormat" : {
+      "comment" : "Your subscription now active. Expires %@",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your subscription now active. Expires %@"
+          }
+        }
+      }
+    },
+    "Store.Premium.Subscription.ExpiredFormat" : {
+      "comment" : "Your subscription expired %@",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your subscription expired %@"
+          }
+        }
+      }
+    },
+    "Store.Premium.Title" : {
+      "comment" : "Unlock premium",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unlock premium"
+          }
+        }
+      }
+    },
+    "Store.Product.Save" : {
+      "comment" : "Save",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Save"
+          }
+        }
+      }
+    },
+    "Store.Purchase" : {
+      "comment" : "Purchase",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Purchase"
+          }
+        }
+      }
+    },
+    "Store.Redeem" : {
+      "comment" : "Redeem offer code",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Redeem offer code"
+          }
+        }
+      }
+    },
+    "Store.Restore" : {
+      "comment" : "Restore purchases",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Restore purchases"
+          }
+        }
+      }
+    },
+    "Store.Subscriptions.Manage" : {
+      "comment" : "Manage subscriptions",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Manage subscriptions"
+          }
+        }
+      }
+    },
+    "Version" : {
+      "comment" : "Version",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Version"
+          }
+        }
+      }
+    }
+  },
+  "version" : "1.0"
+}
