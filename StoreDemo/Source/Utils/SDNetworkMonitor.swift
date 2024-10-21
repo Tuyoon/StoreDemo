@@ -23,20 +23,29 @@ enum SDNetworkMonitorError: LocalizedError {
     }
 }
 
-class SDNetworkMonitor {
+protocol SDNetworkMonitorProtocol {
+    var isConnected: Bool { get }
+}
 
-    static let shared = SDNetworkMonitor()
+class SDNetworkMonitor: SDNetworkMonitorProtocol {
+
+//    static let shared = SDNetworkMonitor()
     
     private let queue = DispatchQueue(label: "NetworkMonitorQueue")
     private(set) var isConnected: Bool = false
     private let monitor: NWPathMonitor
     
-    private init() {
+    init() {
         monitor = NWPathMonitor()
+        start()
+    }
+    
+    deinit {
+        stop()
     }
     
     /// Initialize network monitor.
-    func initialize() {
+    private func start() {
         monitor.pathUpdateHandler = { [weak self] path in
             self?.isConnected = path.status != .unsatisfied
             self?.notifyAboutStatusChange()
@@ -44,7 +53,7 @@ class SDNetworkMonitor {
         monitor.start(queue: queue)
     }
     
-    func stop() {
+    private func stop() {
         monitor.cancel()
     }
     

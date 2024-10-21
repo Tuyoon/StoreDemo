@@ -34,6 +34,7 @@ class SDStoreProductView: UIView {
             updateUI()
         }
     }
+    
     var fullPriceProduct: Product? {
         didSet {
             updateUI()
@@ -53,7 +54,7 @@ class SDStoreProductView: UIView {
             priceLabel.text = product.displayPrice
             
             var descriptionParts: [String] = [
-                
+                product.description
             ]
             if let fullPriceProduct = fullPriceProduct {
                 let discount = product.discountInCompareWith(fullPriceProduct)
@@ -72,9 +73,9 @@ class SDStoreProductView: UIView {
                 checkmarkImageView.image = UIImage(systemName: "circle")
             case .selected:
                 button.isEnabled = true
-            layer.borderColor = UIColor.tintColor.cgColor
+                layer.borderColor = UIColor.sdStoreSelectedProductTint.cgColor
                 layer.borderWidth = 2
-                checkmarkImageView.tintColor = UIColor.tintColor
+            checkmarkImageView.tintColor = UIColor.sdTint
                 checkmarkImageView.image = UIImage(systemName: "checkmark.circle.fill")
             case .disabled:
                 button.isEnabled = false

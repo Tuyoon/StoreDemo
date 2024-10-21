@@ -5,7 +5,7 @@
 //  Created by Admin on 15.10.2024.
 //
 
-import Foundation
+import UIKit
 
 /// UserDefaults key-value storage.
 @propertyWrapper
@@ -13,9 +13,23 @@ class SDUserDefaulltsStoredValue<Value> {
     
     var wrappedValue: Value {
         get {
+            if Value.self == UIColor.self {
+                if let colorComponents = storage.array(forKey: key) as? [CGFloat] {
+                    let cgColor = CGColor(red: colorComponents[0],
+                                          green: colorComponents[1],
+                                          blue: colorComponents[2],
+                                          alpha: colorComponents[3])
+                    return UIColor(cgColor: cgColor) as! Value
+                }
+                return value
+            }
             return storage.object(forKey: key) as? Value ?? value
         }
         set {
+            if let color = newValue as? UIColor, let colorComponents = color.cgColor.components {
+                storage.setValue(colorComponents, forKey: key)
+                return
+            }
             storage.set(newValue, forKey: key)
         }
     }

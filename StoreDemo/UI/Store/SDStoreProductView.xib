@@ -53,7 +53,7 @@
                         </label>
                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="252" verticalHuggingPriority="251" image="circle" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="FDU-F5-CtO">
                             <rect key="frame" x="333.33333333333331" y="0.6666666666666643" width="19.666666666666686" height="46"/>
-                            <color key="tintColor" name="ATTintColor"/>
+                            <color key="tintColor" name="SDTintColor"/>
                         </imageView>
                     </subviews>
                 </stackView>
@@ -91,7 +91,7 @@
     </objects>
     <resources>
         <image name="circle" catalog="system" width="128" height="123"/>
-        <namedColor name="ATTintColor">
+        <namedColor name="SDTintColor">
             <color red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <systemColor name="systemBackgroundColor">

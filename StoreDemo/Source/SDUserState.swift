@@ -13,22 +13,16 @@ extension Notification.Name {
 
 /// User State
 class SDUserState {
-    static let shared = SDUserState()
-    
-    init() {
-        NotificationCenter.default.addObserver(self, selector: #selector(userStateUpdatedNotification), name: .UserStateUpdated, object: nil)
-    }
-    
-    deinit {
-        NotificationCenter.default.removeObserver(self, name: .UserStateUpdated, object: nil)
-    }
-    
-    @objc
-    private func userStateUpdatedNotification(_ notification: Notification) {
-        if SDCloudKitDatabase.shared.coins != storedCoinsCount {
-            storedCoinsCount = coins
-            notifyAboutCoinsChange()
+    private let gameCenter: SDGameCenter
+    private var database: SDCloudKitDatabaseProtocol {
+        didSet {
+            database.delegate = self
         }
+    }
+    
+    init(gameCenter: SDGameCenter, database: SDCloudKitDatabaseProtocol) {
+        self.gameCenter = gameCenter
+        self.database = database
     }
     
     // MARK: - Coins
@@ -40,11 +34,11 @@ class SDUserState {
     /// Coins amount
     var coins: Int {
         get {
-            return SDCloudKitDatabase.shared.coins
+            return database.coins
         }
         set {
             storedCoinsCount = newValue
-            SDCloudKitDatabase.shared.updateCoins(newValue)
+            database.updateCoins(newValue)
             notifyAboutCoinsChange()
         }
     }
@@ -52,8 +46,7 @@ class SDUserState {
     /// Add coins
     func addCoins(_ coins: Int) {
         self.coins = max(self.coins + coins, 0)
-        
-        SDGameCenter.shared.submitCoins(self.coins)
+        database.updateCoins(self.coins)
     }
 }
 
@@ -62,8 +55,22 @@ class SDUserState {
 extension SDUserState {
     private func notifyAboutCoinsChange() {
         DispatchQueue.main.async {
-            NotificationCenter.default.post(name: .UserStateCoinsChanged, object: nil)
+            NotificationCenter.default.post(name: .UserStateCoinsChanged, object: self.coins)
+        }
+    }
+}
+
+// MARK: - SDCloudKitDatabaseDelegate
+
+extension SDUserState: SDCloudKitDatabaseDelegate {
+    func cloudKitDatabaseDidLoad(_ database: SDCloudKitDatabase) {
+        if database.coins != storedCoinsCount {
+            storedCoinsCount = database.coins
+            notifyAboutCoinsChange()
         }
     }
     
+    func cloudKitDatabase(_ database: SDCloudKitDatabase, didLoadCoins coins: Int) {
+        gameCenter.submitCoins(coins)
+    }
 }

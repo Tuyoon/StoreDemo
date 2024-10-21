@@ -20,8 +20,8 @@
       "internalID" : "D8246AA1",
       "localizations" : [
         {
-          "description" : "",
-          "displayName" : "",
+          "description" : "Big pack",
+          "displayName" : "1000 coins",
           "locale" : "en_US"
         }
       ],
@@ -35,8 +35,8 @@
       "internalID" : "2709EBE0",
       "localizations" : [
         {
-          "description" : "",
-          "displayName" : "",
+          "description" : "Medium pack",
+          "displayName" : "500 coins",
           "locale" : "en_US"
         }
       ],
@@ -50,8 +50,8 @@
       "internalID" : "33443F53",
       "localizations" : [
         {
-          "description" : "",
-          "displayName" : "",
+          "description" : "Small pack",
+          "displayName" : "250 coins",
           "locale" : "en_US"
         }
       ],
@@ -61,6 +61,9 @@
     }
   ],
   "settings" : {
+    "_compatibilityTimeRate" : {
+      "3" : 6
+    },
     "_failTransactionsEnabled" : false,
     "_locale" : "en_US",
     "_storefront" : "USA",
@@ -110,7 +113,8 @@
         "enabled" : false,
         "name" : "Offer Code Redeem Sheet"
       }
-    ]
+    ],
+    "_timeRate" : 1002
   },
   "subscriptionGroups" : [
     {
@@ -138,8 +142,8 @@
           },
           "localizations" : [
             {
-              "description" : "",
-              "displayName" : "",
+              "description" : "3 days free",
+              "displayName" : "Premium for month",
               "locale" : "en_US"
             }
           ],
@@ -170,14 +174,14 @@
           },
           "localizations" : [
             {
-              "description" : "",
-              "displayName" : "",
+              "description" : "7 days free",
+              "displayName" : "Premium for year",
               "locale" : "en_US"
             }
           ],
           "productID" : "com.storedemo.year",
           "recurringSubscriptionPeriod" : "P1Y",
-          "referenceName" : "Premium for Year",
+          "referenceName" : "Premium for year",
           "subscriptionGroupID" : "01AD787D",
           "type" : "RecurringSubscription",
           "winbackOffers" : [

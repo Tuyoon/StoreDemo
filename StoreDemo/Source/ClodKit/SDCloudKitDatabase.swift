@@ -82,11 +82,31 @@ private enum SDCloudKitDatabaseError: LocalizedError {
     }
 }
 
+protocol SDCloudKitDatabaseDelegate {
+    func cloudKitDatabaseDidLoad(_ database: SDCloudKitDatabase)
+    func cloudKitDatabase(_ database: SDCloudKitDatabase, didLoadCoins coins: Int)
+}
+
+protocol SDCloudKitDatabaseProtocol {
+    var delegate: SDCloudKitDatabaseDelegate? { get set }
+    
+    var nextDailyRewardDate: Date? { get }
+    func updateNextDailyRewardDate(_ date: Date)
+    
+    var coins: Int { get }
+    func updateCoins(_ coins: Int)
+    
+    var subscriptionExpirationDate: Date? { get }
+    func updateSubscriptionExpirationDate(_ date: Date)
+}
+
 /// CloudKitDatabase
-class SDCloudKitDatabase {
-    static let shared = SDCloudKitDatabase()
+class SDCloudKitDatabase: SDCloudKitDatabaseProtocol {
+    
     private static let container: CKContainer = CKContainer(identifier: SDCloudKitDatabaseConstants.cloudKitContainerID)
     private var database: CKDatabase!
+    
+    var delegate: SDCloudKitDatabaseDelegate?
     
     private var userStateRecord: CKRecord!
     
@@ -115,9 +135,11 @@ class SDCloudKitDatabase {
     
     private(set) var isCloudAvailable: Bool = false
     private var accountStatus: CKAccountStatus = .couldNotDetermine
+    private let networkMonitor: SDNetworkMonitorProtocol
     
 #if !targetEnvironment(simulator)
-    init() {
+    init(networkMonitor: SDNetworkMonitorProtocol) {
+        self.networkMonitor = networkMonitor
         NotificationCenter.default.addObserver(self, selector: #selector(accounChangedNotification), name: NSNotification.Name.CKAccountChanged, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(networkMonitorStatusChanged), name: .SDNetworkMonitorStatusChanged, object: nil)
     }
@@ -145,7 +167,7 @@ class SDCloudKitDatabase {
                 return
             }
             
-            if SDNetworkMonitor.shared.isConnected {
+            if networkMonitor.isConnected {
                 configureDatabaseAndLoad { [weak self] in
                     self?.isCloudAvailable = true
                 }
@@ -203,7 +225,7 @@ class SDCloudKitDatabase {
     /// Network status change notification handler.
     @objc
     private func networkMonitorStatusChanged(_ notification: Notification) {
-        guard SDNetworkMonitor.shared.isConnected else {
+        guard networkMonitor.isConnected else {
             return
         }
         if database == nil {
@@ -304,9 +326,9 @@ extension SDCloudKitDatabase {
                 return
             }
             switch result {
-                case .success(_):
+                case .success:
                     self.notifyAboutCloudStatusChange(state: self.accountStatus.state)
-                case .failure(let failure):
+                case .failure:
                     break
             }
         }
@@ -380,7 +402,7 @@ extension SDCloudKitDatabase {
                 if self.coins != remoteCoins {
                     // Local data is obsolete, update is required.
                     self.coins = remoteCoins
-                    SDGameCenter.shared.submitCoins(remoteCoins)
+                    self.delegate?.cloudKitDatabase(self, didLoadCoins: remoteCoins)
                 }
             }
         }
@@ -415,8 +437,11 @@ extension SDCloudKitDatabase {
     }
     
     private func notifyAboutUserStateUpdate() {
-        DispatchQueue.main.async {
+        DispatchQueue.main.async { [weak self] in
             NotificationCenter.default.post(name: .UserStateUpdated, object: nil)
+            if let self {
+                delegate?.cloudKitDatabaseDidLoad(self)
+            }
         }
     }
         

@@ -10,7 +10,6 @@ import UIKit
 class SDRewardSelectionView: UIView {
 
     @IBOutlet private weak var closedImageView: UIImageView!
-    @IBOutlet private weak var openedImageView: UIImageView!
     @IBOutlet private weak var openedView: UIView!
     @IBOutlet private weak var coinsView: UIView!
     @IBOutlet private weak var coinsLabel: UILabel!
@@ -18,7 +17,6 @@ class SDRewardSelectionView: UIView {
     var reward: SDReward! {
         didSet {
             coinsLabel.text = "\(reward.coinsCount)"
-            openedImageView.image = UIImage(systemName: "dollarsign.circle")
         }
     }
     /// Reward selected.
@@ -27,14 +25,6 @@ class SDRewardSelectionView: UIView {
     var onPress: (() -> Bool)?
     /// Reward opened.
     var onOpen: (() -> Void)?
-    
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        closedImageView.isHidden = false
-        closedImageView.layer.borderColor = UIColor.white.cgColor
-        closedImageView.layer.borderWidth = 1
-        closedImageView.layer.masksToBounds = true
-    }
     
     func open(completion: @escaping () -> Void) {
         openAnimated(animateCoins: false, completion: completion)

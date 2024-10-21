@@ -47,7 +47,9 @@ enum SDReward: CaseIterable {
 }
 
 class SDRewardsManager {
-    static let shared = SDRewardsManager()
+    private let userState: SDUserState
+    private let database: SDCloudKitDatabaseProtocol
+    private let notificationCenter: SDNotificationCenter
     
     /// Timer used for time change protection.
     private var rewardTimer: Timer?
@@ -58,8 +60,8 @@ class SDRewardsManager {
             return false
         }
         
-        guard let nextDailyRewardDate = SDCloudKitDatabase.shared.nextDailyRewardDate else {
-            return false
+        guard let nextDailyRewardDate = database.nextDailyRewardDate else {
+            return true
         }
         
         if Date() >= nextDailyRewardDate {
@@ -68,7 +70,12 @@ class SDRewardsManager {
         return false
     }
     
-    init() {
+    init(userState: SDUserState,
+         database: SDCloudKitDatabaseProtocol,
+         notificationCenter: SDNotificationCenter) {
+        self.userState = userState
+        self.database = database
+        self.notificationCenter = notificationCenter
         NotificationCenter.default.addObserver(self, selector: #selector(userStateChangedNotification), name: .UserStateUpdated, object: nil)
     }
     
@@ -84,7 +91,7 @@ class SDRewardsManager {
             return
         }
         
-        if let nextDailyRewardDate = SDCloudKitDatabase.shared.nextDailyRewardDate, Date() >= nextDailyRewardDate {
+        if let nextDailyRewardDate = database.nextDailyRewardDate, Date() >= nextDailyRewardDate {
             NotificationCenter.default.post(name: .RewardBecomeAvailable, object: nil)
         }
     }
@@ -99,10 +106,10 @@ class SDRewardsManager {
     
     /// Daily reward received. Updates next reward notification.
     func dailyRewardReceived(_ reward: SDReward) {
-        SDUserState.shared.addCoins(reward.coinsCount)
+        userState.addCoins(reward.coinsCount)
         
         let nextDailyRewardDate = Calendar.current.nextDate(after: Date(), matching: SDRewardsManagerConstants.dateComponent, matchingPolicy: .nextTime)!
-        SDCloudKitDatabase.shared.updateNextDailyRewardDate(nextDailyRewardDate)
+        database.updateNextDailyRewardDate(nextDailyRewardDate)
         updateRewardNotification(nextDailyRewardDate)
     }
     
@@ -111,12 +118,12 @@ class SDRewardsManager {
         if timeInterval > 0 {
             stopRewardTimer()
             startRewardTimer(timeInterval)
-            SDNotifications.scheduleNotification(id: SDRewardsManagerConstants.rewardAvailableNotificationIdentifier,
-                                                 timeInterval: timeInterval,
-                                                 title: .PushNotificationDailyRewardAvailableTitle,
-                                                 body: .PushNotificationDailyRewardAvailableMessage,
-                                                 soundType: .coins,
-                                                 badge: 1)
+            notificationCenter.scheduleNotification(id: SDRewardsManagerConstants.rewardAvailableNotificationIdentifier,
+                                               timeInterval: timeInterval,
+                                               title: .PushNotificationDailyRewardAvailableTitle,
+                                               body: .PushNotificationDailyRewardAvailableMessage,
+                                               soundType: .coins,
+                                               badge: 1)
         }
     }
     

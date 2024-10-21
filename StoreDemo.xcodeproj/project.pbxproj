@@ -12,7 +12,7 @@
 		849628DF2CC16D8800CCB4AC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 849628D72CC16D8800CCB4AC /* Assets.xcassets */; };
 		849628E12CC16D8800CCB4AC /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 849628DA2CC16D8800CCB4AC /* LaunchScreen.storyboard */; };
 		849628E22CC16D8800CCB4AC /* SDCloudKitDatabase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 849628C32CC16D8800CCB4AC /* SDCloudKitDatabase.swift */; };
-		849628E32CC16D8800CCB4AC /* SDNotifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = 849628C52CC16D8800CCB4AC /* SDNotifications.swift */; };
+		849628E32CC16D8800CCB4AC /* SDNotificationCenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 849628C52CC16D8800CCB4AC /* SDNotificationCenter.swift */; };
 		849628E42CC16D8800CCB4AC /* SDRewardsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 849628C72CC16D8800CCB4AC /* SDRewardsManager.swift */; };
 		849628E52CC16D8800CCB4AC /* SDStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 849628C92CC16D8800CCB4AC /* SDStore.swift */; };
 		849628E62CC16D8800CCB4AC /* SDNetworkMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 849628CB2CC16D8800CCB4AC /* SDNetworkMonitor.swift */; };
@@ -29,7 +29,6 @@
 		849628FB2CC16E3300CCB4AC /* UIView+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 849628F82CC16E3300CCB4AC /* UIView+Utils.swift */; };
 		849628FD2CC1703B00CCB4AC /* Store.storekit in Resources */ = {isa = PBXBuildFile; fileRef = 849628FC2CC1703B00CCB4AC /* Store.storekit */; };
 		84999E002CC589FE00900C0B /* AUIBackgroundColorTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84999DF92CC589FE00900C0B /* AUIBackgroundColorTableViewCell.swift */; };
-		84999E052CC589FE00900C0B /* SDSwitchTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84999DF42CC589FE00900C0B /* SDSwitchTableViewCell.swift */; };
 		84999E062CC589FE00900C0B /* SDSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84999DFC2CC589FE00900C0B /* SDSettingsViewController.swift */; };
 		84999E0C2CC58AB100900C0B /* SDDateFormatters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84999E0B2CC58AB100900C0B /* SDDateFormatters.swift */; };
 		84999E112CC58B2100900C0B /* SDSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84999E0F2CC58B2100900C0B /* SDSettings.swift */; };
@@ -38,6 +37,11 @@
 		84999E1D2CC5943400900C0B /* UIButton+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84999E1C2CC5943400900C0B /* UIButton+Utils.swift */; };
 		84A2EF6A2CC5B243001E06B7 /* SDButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A2EF692CC5B243001E06B7 /* SDButton.swift */; };
 		84A2EF6D2CC5B989001E06B7 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 84A2EF6C2CC5B989001E06B7 /* Localizable.xcstrings */; };
+		84A2EFB62CC63DF6001E06B7 /* SDDIContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A2EFB52CC63DF6001E06B7 /* SDDIContainer.swift */; };
+		84A2EFB82CC64427001E06B7 /* SDUserStateStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A2EFB72CC64427001E06B7 /* SDUserStateStorage.swift */; };
+		84A2EFBB2CC64731001E06B7 /* SDUserStateStorageContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A2EFBA2CC64731001E06B7 /* SDUserStateStorageContainer.swift */; };
+		84A2EFBD2CC6B2BF001E06B7 /* SDMainPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A2EFBC2CC6B2BF001E06B7 /* SDMainPresenter.swift */; };
+		84A2EFBF2CC6B32D001E06B7 /* SDMainNavigator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A2EFBE2CC6B32D001E06B7 /* SDMainNavigator.swift */; };
 		84AC84A62CC3C7FA00888FCF /* SDGameCenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84AC84A52CC3C7FA00888FCF /* SDGameCenter.swift */; };
 		84D1F59F2CC175D700979782 /* SDStoreProductView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 84D1F59D2CC175D700979782 /* SDStoreProductView.xib */; };
 		84D1F5A02CC175D700979782 /* SDPremiumStoreViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D1F59A2CC175D700979782 /* SDPremiumStoreViewController.swift */; };
@@ -74,7 +78,7 @@
 /* Begin PBXFileReference section */
 		849628C02CC16D8800CCB4AC /* coins.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = coins.wav; sourceTree = "<group>"; };
 		849628C32CC16D8800CCB4AC /* SDCloudKitDatabase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SDCloudKitDatabase.swift; sourceTree = "<group>"; };
-		849628C52CC16D8800CCB4AC /* SDNotifications.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SDNotifications.swift; sourceTree = "<group>"; };
+		849628C52CC16D8800CCB4AC /* SDNotificationCenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SDNotificationCenter.swift; sourceTree = "<group>"; };
 		849628C72CC16D8800CCB4AC /* SDRewardsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SDRewardsManager.swift; sourceTree = "<group>"; };
 		849628C92CC16D8800CCB4AC /* SDStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SDStore.swift; sourceTree = "<group>"; };
 		849628CB2CC16D8800CCB4AC /* SDNetworkMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SDNetworkMonitor.swift; sourceTree = "<group>"; };
@@ -94,7 +98,6 @@
 		849628F82CC16E3300CCB4AC /* UIView+Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Utils.swift"; sourceTree = "<group>"; };
 		849628F92CC16E3300CCB4AC /* UIViewController+Alert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Alert.swift"; sourceTree = "<group>"; };
 		849628FC2CC1703B00CCB4AC /* Store.storekit */ = {isa = PBXFileReference; lastKnownFileType = text; path = Store.storekit; sourceTree = "<group>"; };
-		84999DF42CC589FE00900C0B /* SDSwitchTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SDSwitchTableViewCell.swift; sourceTree = "<group>"; };
 		84999DF92CC589FE00900C0B /* AUIBackgroundColorTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AUIBackgroundColorTableViewCell.swift; sourceTree = "<group>"; };
 		84999DFC2CC589FE00900C0B /* SDSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SDSettingsViewController.swift; sourceTree = "<group>"; };
 		84999E0B2CC58AB100900C0B /* SDDateFormatters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SDDateFormatters.swift; sourceTree = "<group>"; };
@@ -105,6 +108,11 @@
 		84A2EF692CC5B243001E06B7 /* SDButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SDButton.swift; sourceTree = "<group>"; };
 		84A2EF6B2CC5B480001E06B7 /* StoreDemo.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = StoreDemo.entitlements; sourceTree = "<group>"; };
 		84A2EF6C2CC5B989001E06B7 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
+		84A2EFB52CC63DF6001E06B7 /* SDDIContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SDDIContainer.swift; sourceTree = "<group>"; };
+		84A2EFB72CC64427001E06B7 /* SDUserStateStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SDUserStateStorage.swift; sourceTree = "<group>"; };
+		84A2EFBA2CC64731001E06B7 /* SDUserStateStorageContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SDUserStateStorageContainer.swift; sourceTree = "<group>"; };
+		84A2EFBC2CC6B2BF001E06B7 /* SDMainPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SDMainPresenter.swift; sourceTree = "<group>"; };
+		84A2EFBE2CC6B32D001E06B7 /* SDMainNavigator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SDMainNavigator.swift; sourceTree = "<group>"; };
 		84AC84A52CC3C7FA00888FCF /* SDGameCenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SDGameCenter.swift; sourceTree = "<group>"; };
 		84C326242CC14490005B4651 /* StoreDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = StoreDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		84C3263A2CC14494005B4651 /* StoreDemoTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = StoreDemoTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -179,7 +187,7 @@
 		849628C62CC16D8800CCB4AC /* Notifications */ = {
 			isa = PBXGroup;
 			children = (
-				849628C52CC16D8800CCB4AC /* SDNotifications.swift */,
+				849628C52CC16D8800CCB4AC /* SDNotificationCenter.swift */,
 			);
 			path = Notifications;
 			sourceTree = "<group>";
@@ -218,6 +226,8 @@
 		849628D12CC16D8800CCB4AC /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				84A2EFB42CC63DE2001E06B7 /* DIContainer */,
+				84A2EFB92CC6470B001E06B7 /* Storage */,
 				84AC84A42CC3C7ED00888FCF /* GameCenter */,
 				849628C42CC16D8800CCB4AC /* ClodKit */,
 				849628C62CC16D8800CCB4AC /* Notifications */,
@@ -236,7 +246,7 @@
 			isa = PBXGroup;
 			children = (
 				849628D32CC16D8800CCB4AC /* Main.storyboard */,
-				84D1F5982CC175D700979782 /* SDMainViewController.swift */,
+				84B5EAB82CC6E2A900C40B56 /* Main */,
 				84D1F59E2CC175D700979782 /* Store */,
 				84999DFD2CC589FE00900C0B /* Settings */,
 				84D1F5B62CC178BB00979782 /* Rewards */,
@@ -299,7 +309,6 @@
 		84999DFB2CC589FE00900C0B /* Settings Cells */ = {
 			isa = PBXGroup;
 			children = (
-				84999DF42CC589FE00900C0B /* SDSwitchTableViewCell.swift */,
 				84999DF92CC589FE00900C0B /* AUIBackgroundColorTableViewCell.swift */,
 			);
 			path = "Settings Cells";
@@ -322,12 +331,39 @@
 			path = Settings;
 			sourceTree = "<group>";
 		};
+		84A2EFB42CC63DE2001E06B7 /* DIContainer */ = {
+			isa = PBXGroup;
+			children = (
+				84A2EFB52CC63DF6001E06B7 /* SDDIContainer.swift */,
+			);
+			path = DIContainer;
+			sourceTree = "<group>";
+		};
+		84A2EFB92CC6470B001E06B7 /* Storage */ = {
+			isa = PBXGroup;
+			children = (
+				84A2EFB72CC64427001E06B7 /* SDUserStateStorage.swift */,
+				84A2EFBA2CC64731001E06B7 /* SDUserStateStorageContainer.swift */,
+			);
+			path = Storage;
+			sourceTree = "<group>";
+		};
 		84AC84A42CC3C7ED00888FCF /* GameCenter */ = {
 			isa = PBXGroup;
 			children = (
 				84AC84A52CC3C7FA00888FCF /* SDGameCenter.swift */,
 			);
 			path = GameCenter;
+			sourceTree = "<group>";
+		};
+		84B5EAB82CC6E2A900C40B56 /* Main */ = {
+			isa = PBXGroup;
+			children = (
+				84A2EFBE2CC6B32D001E06B7 /* SDMainNavigator.swift */,
+				84A2EFBC2CC6B2BF001E06B7 /* SDMainPresenter.swift */,
+				84D1F5982CC175D700979782 /* SDMainViewController.swift */,
+			);
+			path = Main;
 			sourceTree = "<group>";
 		};
 		84C3261B2CC14490005B4651 = {
@@ -518,7 +554,7 @@
 			files = (
 				849628E22CC16D8800CCB4AC /* SDCloudKitDatabase.swift in Sources */,
 				84999E1D2CC5943400900C0B /* UIButton+Utils.swift in Sources */,
-				849628E32CC16D8800CCB4AC /* SDNotifications.swift in Sources */,
+				849628E32CC16D8800CCB4AC /* SDNotificationCenter.swift in Sources */,
 				84AC84A62CC3C7FA00888FCF /* SDGameCenter.swift in Sources */,
 				849628FA2CC16E3300CCB4AC /* UIViewController+Alert.swift in Sources */,
 				84D1F5B82CC178BB00979782 /* SDRewardView.swift in Sources */,
@@ -526,7 +562,9 @@
 				84D1F5BA2CC178BB00979782 /* SDRewardSelectionView.swift in Sources */,
 				84D1F5A62CC1769400979782 /* Product+Utils.swift in Sources */,
 				849628FB2CC16E3300CCB4AC /* UIView+Utils.swift in Sources */,
+				84A2EFBD2CC6B2BF001E06B7 /* SDMainPresenter.swift in Sources */,
 				84D1F5BC2CC17ADC00979782 /* SDApp.swift in Sources */,
+				84A2EFB82CC64427001E06B7 /* SDUserStateStorage.swift in Sources */,
 				84999E0C2CC58AB100900C0B /* SDDateFormatters.swift in Sources */,
 				849628E42CC16D8800CCB4AC /* SDRewardsManager.swift in Sources */,
 				849628E52CC16D8800CCB4AC /* SDStore.swift in Sources */,
@@ -540,11 +578,13 @@
 				84D1F5A22CC175D700979782 /* SDStoreProductView.swift in Sources */,
 				84D1F5A32CC175D700979782 /* SDStoreFeatureView.swift in Sources */,
 				84D1F5A42CC175D700979782 /* SDMainViewController.swift in Sources */,
+				84A2EFB62CC63DF6001E06B7 /* SDDIContainer.swift in Sources */,
 				849628E92CC16D8800CCB4AC /* SDLocalization.swift in Sources */,
 				84999E142CC58B8D00900C0B /* Bundle+Utils.swift in Sources */,
+				84A2EFBB2CC64731001E06B7 /* SDUserStateStorageContainer.swift in Sources */,
+				84A2EFBF2CC6B32D001E06B7 /* SDMainNavigator.swift in Sources */,
 				84A2EF6A2CC5B243001E06B7 /* SDButton.swift in Sources */,
 				84999E002CC589FE00900C0B /* AUIBackgroundColorTableViewCell.swift in Sources */,
-				84999E052CC589FE00900C0B /* SDSwitchTableViewCell.swift in Sources */,
 				84999E062CC589FE00900C0B /* SDSettingsViewController.swift in Sources */,
 				849628EA2CC16D8800CCB4AC /* SDUserState.swift in Sources */,
 				849628EC2CC16D8800CCB4AC /* AppDelegate.swift in Sources */,

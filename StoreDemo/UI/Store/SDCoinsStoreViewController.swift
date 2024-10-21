@@ -18,7 +18,7 @@ class SDCoinsStoreViewController: UIViewController {
     var mode: SDCoinsStoreViewControllerMode = .default
     var completion: ((_ isPurchased: Bool) -> Void)?
     
-    private var products = SDStore.shared.coinsProducts
+    private lazy var products = store.coinsProducts
     private var selectedProduct: SDStoreProduct?
     
     @IBOutlet private weak var coinsLabel: UILabel!
@@ -35,6 +35,10 @@ class SDCoinsStoreViewController: UIViewController {
     @IBOutlet private weak var closeBarButtonItem: UIBarButtonItem!
     
     private var activityIndicatorView: UIActivityIndicatorView!
+    
+    private let userState = SDDIContainer.shared.resolve(SDUserState.self)
+    private let store = SDDIContainer.shared.resolve(SDStore.self)
+    private let networkMonitor = SDDIContainer.shared.resolve(SDNetworkMonitor.self)
     
     static func store(mode: SDCoinsStoreViewControllerMode,
                       completion: ((_ isPurchased: Bool) -> Void)? = nil) -> UINavigationController {
@@ -83,11 +87,11 @@ class SDCoinsStoreViewController: UIViewController {
     }
     
     private func updateCoinsView() {
-        coinsLabel.text = "\(SDUserState.shared.coins)"
+        coinsLabel.text = "\(userState.coins)"
     }
     
     private func updateCoinsViewAnimated() {
-        coinsLabel.text = "\(SDUserState.shared.coins)"
+        coinsLabel.text = "\(userState.coins)"
         coinsView.animateFilled()
     }
     
@@ -96,7 +100,7 @@ class SDCoinsStoreViewController: UIViewController {
         
         for product in products {
             let productView: SDStoreProductView = SDStoreProductView.fromNib()
-            productView.product = SDStore.shared.storeProduct(for: product)
+            productView.product = store.storeProduct(for: product)
             productView.onSelect = { [weak self] in
                 self?.selectedProduct = product
                 self?.clearProductSelection()
@@ -109,7 +113,7 @@ class SDCoinsStoreViewController: UIViewController {
     
     @objc
     private func updateInternetConnectionUI() {
-        if SDNetworkMonitor.shared.isConnected {
+        if networkMonitor.isConnected {
             infoLabel.isHidden = false
             productsStackView.isHidden = false
             redeemButton.isHidden = false
@@ -129,7 +133,7 @@ class SDCoinsStoreViewController: UIViewController {
     }
     
     private func configurePurchaseButton() {
-        purchaseButton.setTitleColor(.atButtonText.withAlphaComponent(0.5), for: .disabled)
+        purchaseButton.setTitleColor(.sdButtonText.withAlphaComponent(0.5), for: .disabled)
     }
     
     private func updatePurchaseButton() {
@@ -170,7 +174,7 @@ extension SDCoinsStoreViewController {
             return
         }
         showActivity(true)
-        SDStore.shared.buy(product: selectedProduct) { [weak self] result in
+        store.buy(product: selectedProduct) { [weak self] result in
             self?.showActivity(false)
             switch result {
                 case .cancelled:
@@ -189,7 +193,7 @@ extension SDCoinsStoreViewController {
     }
     
     @IBAction private func redeemOfferCodeButtonPressed(_ sender: Any) {
-        SDStore.shared.showOfferCodeRedeem()
+        store.showOfferCodeRedeem()
     }
     
     @IBAction private func closeButtonPresed(_ sender: Any) {

@@ -1,5 +1,5 @@
 //
-//  Notifications.swift
+//  SDNotificationCenter.swift
 //  StoreDemo
 //
 //  Created by Admin on 15.10.2024.
@@ -24,9 +24,9 @@ private extension SDNotificationSoundType {
     }
 }
 
-class SDNotifications {
+class SDNotificationCenter {
     
-    static func authorize(completion: @escaping () -> Void) {
+    init(completion: @escaping () -> Void) {
         Task {
             let center = UNUserNotificationCenter.current()
             do {
@@ -40,7 +40,7 @@ class SDNotifications {
         }
     }
         
-    static func scheduleNotification(id: String, timeInterval: TimeInterval, title: String, body: String, soundType: SDNotificationSoundType, badge: NSNumber?) {
+    func scheduleNotification(id: String, timeInterval: TimeInterval, title: String, body: String, soundType: SDNotificationSoundType, badge: NSNumber?) {
         Task {
             let center = UNUserNotificationCenter.current()
             center.removePendingNotificationRequests(withIdentifiers: [id])
@@ -58,7 +58,7 @@ class SDNotifications {
         }
     }
     
-    static func clearNotifications() {
+    func clearNotifications() {
         if #available(iOS 16.0, *) {
             UNUserNotificationCenter.current().setBadgeCount(0)
         } else {

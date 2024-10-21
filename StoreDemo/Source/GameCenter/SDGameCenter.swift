@@ -12,10 +12,6 @@ private enum SDGameCenterConstants {
 }
 
 class SDGameCenter: NSObject {
-    static let shared = SDGameCenter()
-    
-    private var isHosted: Bool = false
-    
     var isAuthenticated: Bool {
         return GKLocalPlayer.local.isAuthenticated
     }

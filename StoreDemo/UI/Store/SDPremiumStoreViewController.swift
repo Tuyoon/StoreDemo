@@ -12,9 +12,9 @@ class SDPremiumStoreViewController: UIViewController {
     @IBOutlet private weak var infoLabel: UILabel!
     @IBOutlet private var featureViews: [SDStoreFeatureView] = []
     
-    @IBOutlet private weak var purchasingView: UIView!
-    @IBOutlet private weak var yearlyProductView: SDStoreProductView!
-    @IBOutlet private weak var monthlyProductView: SDStoreProductView!
+    @IBOutlet private weak var productsStackView: UIStackView!
+    private var yearlyProductView: SDStoreProductView?
+    private var monthlyProductView: SDStoreProductView?
     
     @IBOutlet private weak var purchaseButton: UIButton!
     @IBOutlet private weak var restoreButton: UIButton!
@@ -27,16 +27,15 @@ class SDPremiumStoreViewController: UIViewController {
     @IBOutlet private weak var closeBarButtonItem: UIBarButtonItem!
     private var activityIndicatorView: UIActivityIndicatorView!
     
+    private let store = SDDIContainer.shared.resolve(SDStore.self)
+    private let networkMonitor = SDDIContainer.shared.resolve(SDNetworkMonitor.self)
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         localize()
-        createActivityIndicatorView()
-        configureFeaturesViews()
-        configureProductsViews()
-        configurePurchaseButton()
+        configureUI()
         updateInfo()
-        updateInternetConnectionUI()
         subscribeForNotifications()
     }
     
@@ -58,19 +57,23 @@ class SDPremiumStoreViewController: UIViewController {
 
 extension SDPremiumStoreViewController {
     @IBAction private func manageSubscriptionsButtonPressed(_ sender: Any) {
-        SDStore.shared.showManageSubscriptions()
+        store.showManageSubscriptions()
     }
     
     @IBAction private func purchaseButtonPressed(_ sender: Any) {
-        let product: SDStoreProduct
-        if yearlyProductView.state == .selected {
+        var product: SDStoreProduct?
+        if yearlyProductView?.state == .selected {
             product = .yearlySubscription
-        } else {
+        } else if monthlyProductView?.state == .selected {
             product = .monthlySubscription
         }
         
+        guard let product else {
+            return
+        }
+        
         showActivity(true)
-        SDStore.shared.buy(product: product) { [weak self] result in
+        store.buy(product: product) { [weak self] result in
             self?.showActivity(false)
             switch result {
                 case .cancelled:
@@ -85,7 +88,7 @@ extension SDPremiumStoreViewController {
     
     @IBAction private func restoreButtonPressed(_ sender: Any) {
         showActivity(true)
-        SDStore.shared.restore { [weak self] error in
+        store.restore { [weak self] error in
             self?.showActivity(false)
             if let error {
                 self?.showErrorAlert(error: error)
@@ -94,7 +97,7 @@ extension SDPremiumStoreViewController {
     }
     
     @IBAction private func redeemOfferCodeButtonPressed(_ sender: Any) {
-        SDStore.shared.showOfferCodeRedeem()
+        store.showOfferCodeRedeem()
     }
     
     @IBAction private func closeButtonPressed(_ sender: Any) {
@@ -105,6 +108,14 @@ extension SDPremiumStoreViewController {
 // MARK: - Private Methods
 
 extension SDPremiumStoreViewController {
+    
+    private func configureUI() {
+        createActivityIndicatorView()
+        configureFeaturesViews()
+        configureProductsViews()
+        configurePurchaseButton()
+        updateInternetConnectionUI()
+    }
     
     private func subscribeForNotifications() {
         NotificationCenter.default.addObserver(self, selector: #selector(premiumStateChangedNotification), name: .SDStorePremiumStateChanged, object: nil)
@@ -130,46 +141,53 @@ extension SDPremiumStoreViewController {
     }
     
     private func configureProductsViews() {
-        if let yearlyProduct = SDStore.shared.storeProduct(for: .yearlySubscription) {
+        if let yearlyProduct = store.storeProduct(for: .yearlySubscription) {
+            let yearlyProductView: SDStoreProductView = SDStoreProductView.fromNib()
+            productsStackView.insertArrangedSubview(yearlyProductView, at: productsStackView.arrangedSubviews.count - 1)
             yearlyProductView.product = yearlyProduct
-            if let monthlyProduct = SDStore.shared.storeProduct(for: .monthlySubscription) {
+            if let monthlyProduct = store.storeProduct(for: .monthlySubscription) {
                 yearlyProductView.fullPriceProduct = monthlyProduct
             }
             yearlyProductView.onSelect = { [weak self] in
                 self?.purchaseButton.isEnabled = true
-                self?.monthlyProductView.state = .default
+                self?.monthlyProductView?.state = .default
             }
             yearlyProductView.state = .selected
+            purchaseButton.isEnabled = true
             yearlyProductView.isHidden = false
+            self.yearlyProductView = yearlyProductView
         } else {
-            yearlyProductView.isHidden = true
+            yearlyProductView?.isHidden = true
         }
         
-        if let monthlyProduct = SDStore.shared.storeProduct(for: .monthlySubscription) {
+        if let monthlyProduct = store.storeProduct(for: .monthlySubscription) {
+            let monthlyProductView: SDStoreProductView = SDStoreProductView.fromNib()
+            productsStackView.insertArrangedSubview(monthlyProductView, at: productsStackView.arrangedSubviews.count - 1)
             monthlyProductView.product = monthlyProduct
             monthlyProductView.onSelect = { [weak self] in
                 self?.purchaseButton.isEnabled = true
-                self?.yearlyProductView.state = .default
+                self?.yearlyProductView?.state = .default
             }
             monthlyProductView.isHidden = false
+            self.monthlyProductView = monthlyProductView
         } else {
-            monthlyProductView.isHidden = true
+            monthlyProductView?.isHidden = true
         }
     }
     
     private func configurePurchaseButton() {
-        purchaseButton.setTitleColor(.atButtonText.withAlphaComponent(0.5), for: .disabled)
+        purchaseButton.setTitleColor(.sdButtonText.withAlphaComponent(0.5), for: .disabled)
     }
     
     @objc
     private func updateInternetConnectionUI() {
-        if SDNetworkMonitor.shared.isConnected {
-            purchasingView.isHidden = false
+        if networkMonitor.isConnected {
+            productsStackView.isHidden = false
             purchaseButton.isHidden = false
             productsLoadingErrorView.isHidden = true
             return
         }
-        purchasingView.isHidden = true
+        productsStackView.isHidden = true
         purchaseButton.isHidden = true
         productsLoadingErrorView.isHidden = false
         productsLoadingErrorLabel.text = .ErrorStoreProductsLoading
@@ -197,24 +215,24 @@ extension SDPremiumStoreViewController {
     }
     
     private func updateInfo() {
-        let state = SDStore.shared.state
+        let state = store.state
         var info: String = ""
         switch state {
             case .none:
                 info = .PremiumStoreDescription
-                purchasingView.isHidden = false
+                productsStackView.isHidden = false
                 purchaseButton.isHidden = false
                 manageSubscriptionsButton.isHidden = true
                 redeemButton.isHidden = false
             case .subscribed(let date):
                 info = String(format: .PremiumStoreSubscriptionActiveFormat, SDDateFormatters.standardString(from: date))
-                purchasingView.isHidden = true
+                productsStackView.isHidden = true
                 purchaseButton.isHidden = true
                 manageSubscriptionsButton.isHidden = false
                 redeemButton.isHidden = true
             case .expired(let date):
                 info = String(format: .PremiumStoreSubscriptionExpiredFormat, SDDateFormatters.standardString(from: date))
-                purchasingView.isHidden = false
+                productsStackView.isHidden = false
                 purchaseButton.isHidden = false
                 manageSubscriptionsButton.isHidden = false
                 redeemButton.isHidden = false

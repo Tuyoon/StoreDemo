@@ -11,26 +11,52 @@ import CloudKit
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
-
-
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-#if !targetEnvironment(simulator)
-        // Load iCloud data.
-        SDCloudKitDatabase.shared.load { error in
-            if let error {
-                if let scene = application.connectedScenes.first as? UIWindowScene {
-                    scene.keyWindow?.rootViewController?.showAlert(title: error.localizedDescription)
-                }
-            }
+        
+        let diContainer = SDDIContainer.shared
+        
+        diContainer.register(SDNetworkMonitor.self) {
+            return SDNetworkMonitor()
         }
-#endif
-        // Start network monitor.
-        SDNetworkMonitor.shared.initialize()
-        // Initialize store to load products.
-        SDStore.shared.initialize()
-        // Authorize notifications.
-        SDNotifications.authorize {
-            application.registerForRemoteNotifications()
+        
+        diContainer.register(SDCloudKitDatabase.self) {
+            let networkMonitor = SDDIContainer.shared.resolve(SDNetworkMonitor.self)
+            return SDCloudKitDatabase(networkMonitor: networkMonitor)
+        }
+        
+        diContainer.register(SDGameCenter.self) {
+            return SDGameCenter()
+        }
+        
+        diContainer.register(SDUserState.self) {
+            let gameCenter = SDDIContainer.shared.resolve(SDGameCenter.self)
+            let database = SDDIContainer.shared.resolve(SDCloudKitDatabase.self)
+            return SDUserState(gameCenter: gameCenter, database: database)
+        }
+        
+        
+        diContainer.register(SDStore.self) {
+            let userState = SDDIContainer.shared.resolve(SDUserState.self)
+            let database = SDDIContainer.shared.resolve(SDCloudKitDatabase.self)
+            let networkMonitor = SDDIContainer.shared.resolve(SDNetworkMonitor.self)
+            return SDStore(userState: userState,
+                           database: database,
+                           networkMonitor: networkMonitor)
+        }
+        
+        diContainer.register(SDNotificationCenter.self) {
+            return SDNotificationCenter(completion: {
+                application.registerForRemoteNotifications()
+            })
+        }
+        
+        diContainer.register(SDRewardsManager.self) {
+            let userState = SDDIContainer.shared.resolve(SDUserState.self)
+            let database = SDDIContainer.shared.resolve(SDCloudKitDatabase.self)
+            let notificationCenter = SDDIContainer.shared.resolve(SDNotificationCenter.self)
+            return SDRewardsManager(userState: userState,
+                                    database: database,
+                                    notificationCenter: notificationCenter)
         }
         
         return true
@@ -42,13 +68,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                      fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
         let dict = userInfo as! [String: NSObject]
         let notification = CKNotification(fromRemoteNotificationDictionary: dict)
-        if SDCloudKitDatabase.shared.handleNotification(notification) {
+        let cloudKitDatabase = SDDIContainer.shared.resolve(SDCloudKitDatabase.self)
+        if cloudKitDatabase.handleNotification(notification) {
             completionHandler(.newData)
         } else {
             completionHandler(.noData)
         }
     }
 #endif
+    
     // MARK: UISceneSession Lifecycle
 
     func application(_ application: UIApplication, configurationForConnecting connectingSceneSession: UISceneSession, options: UIScene.ConnectionOptions) -> UISceneConfiguration {
@@ -65,7 +93,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationDidBecomeActive(_ application: UIApplication) {
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
-        SDNotifications.clearNotifications()
+        let notificationCenter = SDDIContainer.shared.resolve(SDNotificationCenter.self)
+        notificationCenter.clearNotifications()
     }
 }
 

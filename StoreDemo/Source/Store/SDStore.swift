@@ -74,8 +74,6 @@ enum SDStoreState {
 }
 
 class SDStore {
-    static let shared = SDStore()
-    
     /// Coins products.
     var coinsProducts: [SDStoreProduct] = [
         .coins1000,
@@ -92,12 +90,12 @@ class SDStore {
     private var savedSubscriptionExpirationDate: Date?
     private var subscriptionExpirationDate: Date? {
         get {
-            SDCloudKitDatabase.shared.subscriptionExpirationDate ?? savedSubscriptionExpirationDate
+            database.subscriptionExpirationDate ?? savedSubscriptionExpirationDate
         }
         set {
             if let newValue {
                 savedSubscriptionExpirationDate = newValue
-                SDCloudKitDatabase.shared.updateSubscriptionExpirationDate(newValue)
+                database.updateSubscriptionExpirationDate(newValue)
                 sendPremiumStateChangedNotification()
                 startSubscriptionExpirationTimer()
             } else {
@@ -105,6 +103,10 @@ class SDStore {
             }
         }
     }
+    
+    private let userState: SDUserState
+    private let database: SDCloudKitDatabaseProtocol
+    private let networkMonitor: SDNetworkMonitor
     
     var hasPremium: Bool {
         if let subscriptionExpirationDate {
@@ -123,7 +125,13 @@ class SDStore {
         return .none
     }
 
-    init() {
+    init(userState: SDUserState,
+         database: SDCloudKitDatabaseProtocol,
+         networkMonitor: SDNetworkMonitor) {
+        self.userState = userState
+        self.database = database
+        self.networkMonitor = networkMonitor
+        
         updates = newTransactionListenerTask()
         startSubscriptionExpirationTimer()
         NotificationCenter.default.addObserver(self, selector: #selector(userStateUpdatedNotification), name: .UserStateUpdated, object: nil)
@@ -139,7 +147,7 @@ class SDStore {
     }
     
     @objc private func userStateUpdatedNotification(_ notification: Notification) {
-        if let remoteSubscriptionExpirationDate = SDCloudKitDatabase.shared.subscriptionExpirationDate{
+        if let remoteSubscriptionExpirationDate = database.subscriptionExpirationDate {
             if let savedSubscriptionExpirationDate, remoteSubscriptionExpirationDate < savedSubscriptionExpirationDate {
                 return
             }
@@ -152,7 +160,7 @@ class SDStore {
     /// Network monitor status change notification handler.
     @objc
     private func networkMonitorStatusChanged(_ notification: Notification) {
-        guard SDNetworkMonitor.shared.isConnected else {
+        guard networkMonitor.isConnected else {
             return
         }
         if productsMap.isEmpty {
@@ -170,7 +178,7 @@ extension SDStore {
     
     /// Initialize store.
     func initialize() {
-        guard SDNetworkMonitor.shared.isConnected else {
+        guard networkMonitor.isConnected else {
             return
         }
         Task {
@@ -186,7 +194,7 @@ extension SDStore {
     
     /// Buy specified product.
     func buy(product: SDStoreProduct, completion: @escaping (_ result: SDPurchasingResult) -> Void) {
-        guard SDNetworkMonitor.shared.isConnected else {
+        guard networkMonitor.isConnected else {
             completion(.error(error: SDNetworkMonitorError.noInternet))
             return
         }
@@ -243,7 +251,7 @@ extension SDStore {
     
     /// Restore purchases.
     func restore(completion: @escaping (_ error: Error?) -> Void) {
-        guard SDNetworkMonitor.shared.isConnected else {
+        guard networkMonitor.isConnected else {
             completion(SDNetworkMonitorError.noInternet)
             return
         }
@@ -315,7 +323,7 @@ private extension SDStore {
         switch transaction.productType {
             case .consumable:
                 let coins = coinsForProduct(id: transaction.productID)
-                SDUserState.shared.addCoins(coins)
+                userState.addCoins(coins)
             default:
                 await updatePremiumState()
         }
@@ -394,7 +402,7 @@ extension SDStore {
     
     private func sendPremiumStateChangedNotification() {
         DispatchQueue.main.async {
-            NotificationCenter.default.post(name: .SDStorePremiumStateChanged, object: nil)
+            NotificationCenter.default.post(name: .SDStorePremiumStateChanged, object: self.hasPremium)
         }
     }
     

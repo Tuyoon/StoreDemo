@@ -38,7 +38,7 @@ class SDSettingsViewController: UITableViewController {
     
     private var items: [SDSettingsSection: [SDSettingsItemType]] = [:]
     
-    var completion: (() -> Void)?
+    private let store = SDDIContainer.shared.resolve(SDStore.self)
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -105,9 +105,7 @@ extension SDSettingsViewController {
 
 extension SDSettingsViewController {
     @IBAction private func closeButtonPressed(_ sender: Any) {
-        dismiss(animated: true) { [weak self] in
-            self?.completion?()
-        }
+        dismiss(animated: true)
     }
     
     @IBAction private func joinPremiumButtonPressed(_ sender: Any) {
@@ -120,9 +118,9 @@ extension SDSettingsViewController {
     }
     
     private func updatePremiumUI() {
-        if SDStore.shared.hasPremium {
+        if store.hasPremium {
             joinPremiumButton.isHidden = true
-            let state = SDStore.shared.state
+            let state = store.state
             switch state {
                 case .none:
                     break
